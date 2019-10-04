@@ -19,6 +19,7 @@
                 <div class="collapse navbar-collapse" id="nav-bar">
                     <ul class="navbar-nav mr-auto"></ul>
                     <ul class="navbar-nav">
+                        {!! link_to_route('tasks.create', 'New Task', [], ['class' => 'nav-link']) !!}
                     </ul>
                 </div>
             </nav>
