@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Task;
 
+use App\User;
+
+use Auth;
+
 class TasksController extends Controller
 {
     /**
@@ -88,11 +92,16 @@ class TasksController extends Controller
      */
     public function show($id)
     {
-        $task = Task::find($id);
-        
-        return view('tasks.show', [
-            'task' => $task,
-        ]);
+        $user_id = Task::find($id);
+        if (Auth::id() == $user_id->user_id) {
+            $task = Task::find($id);
+            
+            return view('tasks.show', [
+                'task' => $task,
+            ]);
+        } else {
+            return redirect('/');
+        }
     }
 
     /**
@@ -103,11 +112,17 @@ class TasksController extends Controller
      */
     public function edit($id)
     {
-        $task = Task::find($id);
+        $user_id = Task::find($id);
+        if (Auth::id() == $user_id->user_id) {
+            $task = Task::find($id);
+            
+            return view('tasks.edit', [
+                'task' => $task,
+            ]);
+        } else {
+            return redirect('/');
+        }
         
-        return view('tasks.edit', [
-            'task' => $task,
-        ]);
     }
 
     /**
