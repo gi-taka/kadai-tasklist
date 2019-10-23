@@ -15,11 +15,25 @@ class TasksController extends Controller
      */
     public function index()
     {
+        $data = [];
+        if (\Auth::check()) {
+            $user = \Auth::user();
+            $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
+            
+            $data = [
+                'user' => $user,
+                'tasks' => $tasks,
+            ];
+        }
+        
+        return view('welcome', $data);
+        /*
         $tasks = Task::paginate(25);
         
         return view ('tasks.index', [
             'tasks' => $tasks,
         ]);
+        */
     }
 
     /**
@@ -27,6 +41,7 @@ class TasksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function create()
     {
         $task = new Task;
@@ -49,12 +64,20 @@ class TasksController extends Controller
             'content' => 'required|max:191',
         ]);
         
+        $request->user()->tasks()->create([
+            'status' => $request->status,
+            'content' => $request->content,
+        ]);
+        
+        return redirect('/');
+        /*
         $task = new Task;
         $task->status = $request->status;
         $task->content = $request->content;
         $task->save();
         
         return redirect('/');
+        */
     }
 
     /**
@@ -117,6 +140,7 @@ class TasksController extends Controller
      */
     public function destroy($id)
     {
+        
         $task = Task::find($id);
         $task->delete();
         

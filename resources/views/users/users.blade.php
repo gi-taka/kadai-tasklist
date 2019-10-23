@@ -7,9 +7,11 @@
                     <div>
                         {{ $user->name }}
                     </div>
-                    <div>
-                        <p>{!! link_to_route('users.show', 'View profile', ['id' => $user->id]) !!}</p>
-                    </div>
+                    @if (Auth::id() == $user->id)
+                        <div>
+                            <p>{!! link_to_route('users.show', 'My Profile', ['id' => $user->id]) !!}</p>
+                        </div>
+                    @endif
                 </div>
             </li>
         @endforeach
